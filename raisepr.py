@@ -113,7 +113,6 @@ async def send_pr(*args):
     username = config['github']['username']
     repo_url = config['github']['repo_url'] if 'repo_url' in config['github'] else None
 
-    # Parse repository details
     if repo_url:
         parsed_url = urlparse(repo_url)
         path_components = parsed_url.path.split('/')
@@ -123,7 +122,7 @@ async def send_pr(*args):
         repo_owner = config['github']['repo_owner']
         repo_name = config['github']['repo_name']
 
-    source_branch_name = "main"  # Default to main branch
+    source_branch_name = "main"  
     new_branch_name = "unit-tests-" + formatted_now.replace(" ", "-").replace(":", "-")
     folder_path = "tests"
 
@@ -131,7 +130,6 @@ async def send_pr(*args):
     unit_test_response = await get_unit_test_response()
     print(f"Unit test response received: {unit_test_response}")
 
-    # Parse unit test response and create files
     file_contents = unit_test_response.split('###')
     
     # Create branch
@@ -154,7 +152,6 @@ async def send_pr(*args):
                 print(f"Creating file {file_name} with content:\n{content}")
                 create_file_in_github(token, repo_owner, repo_name, new_branch_name, file_path, content, commit_message)
 
-    # Create pull request
     resp = create_pull_request_github(
         token=token,
         owner=repo_owner,
