@@ -7,5 +7,15 @@
     },
     "perplexity": {
         "api_key": "your_perplexity_api_key"
+    },
+    "credentials_2": {
+        "username": "your_github_username",
+        "access_token": "your_github_access_token",
+        "repo_url": "your_github_repo_url"
+    },
+    "credentials_3": {
+        "username": "your_github_username",
+        "password": "your_github_password",
+        "repo_url": "your_github_repo_url"
     }
 }
