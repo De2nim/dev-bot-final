@@ -17,7 +17,6 @@ def get_files_list_github(token, owner, repo, branch):
         return []
     
     files = response.json().get('tree', [])
-    # Filter only files (not directories)
     return [item['path'] for item in files if item['type'] == 'blob']
 
 def get_repo_content_github(token, owner, repo, file_path, branch):
@@ -33,7 +32,6 @@ def get_repo_content_github(token, owner, repo, file_path, branch):
         print(f"Failed to fetch {file_path}")
         return None
     
-    # Decode content from base64
     import base64
     content = response.json().get('content', '')
     decoded_content = base64.b64decode(content).decode('utf-8')
