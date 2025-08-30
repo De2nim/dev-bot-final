@@ -3,19 +3,10 @@
         "username": "your_github_username",
         "token": "your_github_token",
         "repo_owner": "your_github_username_or_org",
-        "repo_name": "your_actual_repo_name"
+        "repo_name": "your_actual_repo_name",
+        "repo_url": "your_github_repo_url"
     },
     "perplexity": {
         "api_key": "your_perplexity_api_key"
-    },
-    "credentials_2": {
-        "username": "your_github_username",
-        "access_token": "your_github_access_token",
-        "repo_url": "your_github_repo_url"
-    },
-    "credentials_3": {
-        "username": "your_github_username",
-        "password": "your_github_password",
-        "repo_url": "your_github_repo_url"
     }
 }
