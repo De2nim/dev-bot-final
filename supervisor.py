@@ -4,7 +4,6 @@ from langchain_perplexity import ChatPerplexity
 from langchain_core.output_parsers import JsonOutputKeyToolsParser
 import json
 
-# Load configuration from JSON
 with open('config.json', 'r') as file:
     config = json.load(file)
 
@@ -14,7 +13,6 @@ llm = ChatPerplexity(
 )
 
 members = ["CodeReview","UnitTest"]
-# members = ["UnitTest"]
 
 system_prompt = f"""
 You are a Dev-Bot who have two functionalities and your name is "Dev-Bot" You have to greet user first and introduce yourself
@@ -27,7 +25,7 @@ As soon as one functionality is applied you have to end conversation with greeti
 """
 
 options = ["FINISH"] + members
-# Using openai function calling can make output parsing easier for us
+
 function_def = {
     "name": "route",
     "description": "Select the next role.",
@@ -62,16 +60,11 @@ prompt = ChatPromptTemplate.from_messages(
 
 supervisor_chain = (
         prompt
-        # | llm.bind_tools(functions=[function_def], function_call = "route")
         | llm
         | JsonOutputKeyToolsParser(key_name="route")
 )
 
-
-
 def should_end_conversation(state):
-    # Implement your logic to determine if the conversation should end
-    # For example, check for specific keywords or phrases in the user's messages
     try:
         last_message = state["messages"][-1]
         second_last_message = state["messages"][-2]
@@ -80,14 +73,10 @@ def should_end_conversation(state):
         return False
     except Exception as e:
         print("Error in should_end_conversation", e)
-    return  False
-
+    return False
 
 def supervisor_chain_with_termination(state):
     if should_end_conversation(state):
         return {"next": "FINISH"}
     result = supervisor_chain.invoke(state)
     return result
-
-
-
