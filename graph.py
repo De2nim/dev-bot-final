@@ -10,7 +10,6 @@ import functools
 def agent_node(state, agent, name):
     try:
         result = agent.invoke(state)
-        # Handle different response formats
         if isinstance(result, dict):
             if "output" in result:
                 content = result["output"]
@@ -27,8 +26,7 @@ def agent_node(state, agent, name):
         return {"messages": [SystemMessage(content=f"Error: {str(e)}", name=name)]}
 
 class AgentState(TypedDict):
-    # The annotation tells the graph that new messages will always
-    # be added to the current states
+
     messages: Annotated[Sequence[BaseMessage], operator.add]
     # The 'next' field indicates where to route to next
     next: str
@@ -49,7 +47,6 @@ conditional_map = {k: k for k in members}
 conditional_map["FINISH"] = END
 
 workflow.add_conditional_edges("supervisor", lambda x: x["next"], conditional_map)
-# Finally, add entrypoint
 workflow.set_entry_point("supervisor")
 
 graph = workflow.compile()

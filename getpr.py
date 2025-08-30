@@ -30,22 +30,18 @@ def get_pr(pr_url, acc_tok):
     REPO_NAME = path_components[2]
     PULL_REQUEST_ID = int(path_components[4])
 
-    # GitHub API headers
     headers = {
         'Authorization': f'token {GITHUB_TOKEN}',
         'Accept': 'application/vnd.github.v3+json'
     }
 
-    # Get pull request details
     pull_request_url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/pulls/{PULL_REQUEST_ID}"
     pull_request_response = requests.get(pull_request_url, headers=headers)
     pull_request_response.raise_for_status()
     pull_request = pull_request_response.json()
 
-    # Convert the created_at timestamp to a human-readable format
     created_at_datetime = pull_request['created_at']
 
-    # Collect pull request details
     pull_request_details = {
         "title": pull_request['title'],
         "author": pull_request['user']['login'],
@@ -55,7 +51,6 @@ def get_pr(pr_url, acc_tok):
         "files": []
     }
 
-    # Get the files changed in the pull request
     changes_url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/pulls/{PULL_REQUEST_ID}/files"
     changes_response = requests.get(changes_url, headers=headers)
     changes_response.raise_for_status()
@@ -72,10 +67,8 @@ def get_pr(pr_url, acc_tok):
             "removed_lines": []
         }
 
-        # Get the diff content
         diff_content = change['patch']
         
-        # Parse the diff to get added and removed lines
         added_lines = []
         removed_lines = []
         
@@ -102,7 +95,6 @@ def get_pr(pr_url, acc_tok):
         file_details["removed_lines"] = removed_lines
         pull_request_details["files"].append(file_details)
 
-    # Convert the pull request details to JSON
     pull_request_json = json.dumps(pull_request_details, indent=4)
     print(pull_request_json)
     return pull_request_json
